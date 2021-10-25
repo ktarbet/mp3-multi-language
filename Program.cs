@@ -6,21 +6,27 @@ namespace mp3_multi_language
   {
     static void Main(string[] args)
     {
-      string strMP3Folder = @"C:\Users\ktarbet\Music\";
-      string strMP3SourceFilename2 = "spa.mp3";
-      string strMP3SourceFilename1 = "eng.mp3";
-      string strMP3OutputFilename = "5sec.mp3";
 
-      using (Mp3FileReader reader1 = new Mp3FileReader(strMP3Folder + strMP3SourceFilename1))
+      if (args.Length!=4)
       {
-        using (Mp3FileReader reader2 = new Mp3FileReader(strMP3Folder + strMP3SourceFilename2))
+        Console.WriteLine("Usage: mp3-multi-langauge.exe lang1.mp3 lang2.mp3 output.mp3 alternateSeconds" );
+        return;
+      }
+      string strMP3SourceFilename1 = args[0]; 
+      string strMP3SourceFilename2 = args[1];
+      string strMP3OutputFilename = args[2];
+      double secondsBetweenLangauges = double.Parse(args[3]);
+
+      using (Mp3FileReader reader1 = new Mp3FileReader( strMP3SourceFilename1))
+      {
+        using (Mp3FileReader reader2 = new Mp3FileReader( strMP3SourceFilename2))
         {
 
-          System.IO.FileStream _fs = new System.IO.FileStream(strMP3Folder + strMP3OutputFilename, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+          System.IO.FileStream _fs = new System.IO.FileStream(strMP3OutputFilename, System.IO.FileMode.Create, System.IO.FileAccess.Write);
 
           Mp3Frame mp3Frame1 = reader1.ReadNextFrame();
           Mp3Frame mp3Frame2 = reader1.ReadNextFrame();
-          double secondsBetweenLangauges = 5;
+       
           
           while (mp3Frame1!=null || mp3Frame2!=null)
           {
@@ -50,7 +56,7 @@ namespace mp3_multi_language
        
         mp3Frame = reader1.ReadNextFrame();
       }
-      Console.WriteLine(secondsTotal);
+     // Console.WriteLine(secondsTotal);
       return mp3Frame;
     }
 }
